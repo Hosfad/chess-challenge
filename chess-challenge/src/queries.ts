@@ -33,6 +33,7 @@ const getErrMessage = async (response: Response): Promise<Error> => {
 
 // Should impelemt schema validation, not needed for the sake of the test
 export const createGame = async (): Promise<GameState> => {
+    console.log("Creating a game");
     const response = await fetch(`${API_BASE}/game`, { method: "POST" });
     if (!response.ok) throw await getErrMessage(response);
     return response.json();

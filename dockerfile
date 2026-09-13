@@ -25,6 +25,14 @@ COPY --from=client-build /app/chess-challenge/dist ./client/dist
 COPY --from=client-build /app/chess-challenge/package.json /app/chess-challenge/package-lock.json ./client/
 RUN npm ci --omit=dev \
     && npm ci --omit=dev --prefix server \
-    && npm ci --prefix client
+    && npm ci --prefix client \
+    && printf '%s\n' \
+        "export default {" \
+        "  preview: {" \
+        "    host: true," \
+        "    port: 3000," \
+        "    proxy: { '/api': 'http://localhost:3001' }," \
+        "  }," \
+        "}" > client/vite.config.js
 EXPOSE 3000 3001
 CMD ["npm", "run", "start"]

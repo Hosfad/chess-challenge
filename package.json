@@ -2,7 +2,7 @@
     "name": "chess-challenge",
     "private": true,
     "scripts": {
-        "start": "concurrently --no-color --kill-others-on-fail --names server,client \"npm run start --prefix server\" \"npm run preview --prefix chess-challenge\""
+        "start": "concurrently --no-color --kill-others-on-fail --names server,client \"npm run start --prefix server\" \"npm run preview --prefix client -- --host\""
     },
     "dependencies": {
         "concurrently": "^9.2.0",

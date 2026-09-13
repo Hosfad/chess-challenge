@@ -16,4 +16,10 @@ npm install
 npm run dev
 ```
 
-or build the docker image and run it.
+or build the docker image and run it :
+
+```bash
+docker build -t iyad-chess .
+# Then
+docker run -p 3000:3000 iyad-chess
+```

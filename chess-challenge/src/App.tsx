@@ -54,8 +54,6 @@ function App() {
     };
 
     useEffect(() => {
-        if (!gameId) return;
-
         startGame();
 
         const handleBeforeUnload = () => {
@@ -67,7 +65,7 @@ function App() {
             window.removeEventListener("beforeunload", handleBeforeUnload);
             handleBeforeUnload();
         };
-    }, [gameId]);
+    }, []);
 
     const legalMoves = isSelected && knight ? knightMovesFrom(knight) : [];
 
