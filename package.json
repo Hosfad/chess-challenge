@@ -1,0 +1,10 @@
+{
+  "name": "chess-challenge",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail --names server,client --prefix-colors magenta,cyan \"npm run start --prefix server\" \"npm run preview --prefix client\""
+  },
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
