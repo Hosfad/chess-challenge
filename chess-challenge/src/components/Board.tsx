@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import type { Square } from "../queries";
 
 const BOARD_SIZE = 8;
-const SQUARE_SIZE = 64;
+const SQUARE_SIZE = 80;
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
 
