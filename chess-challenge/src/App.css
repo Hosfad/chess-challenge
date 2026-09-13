@@ -7,13 +7,32 @@
     flex-grow: 1;
 }
 
+.board-frame {
+    display: grid;
+    grid-template-columns: 28px repeat(8, 64px) 28px;
+    grid-template-rows: 28px repeat(8, 64px) 28px;
+    border: 12px solid #7a4a26;
+    border-radius: 12px;
+    background: #7a4a26;
+    box-shadow: var(--shadow);
+    user-select: none;
+}
+
 .chess-board {
     display: grid;
     grid-template-columns: repeat(8, 64px);
     grid-template-rows: repeat(8, 64px);
-    border: 4px solid var(--text-h);
-    box-shadow: var(--shadow);
-    user-select: none;
+    grid-row: 2 / span 8;
+    grid-column: 2 / span 8;
+}
+
+.coord {
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: #efd8ae;
 }
 
 .square {
@@ -22,6 +41,8 @@
     padding: 0;
     border: none;
     cursor: pointer;
+
+    touch-action: none;
 }
 
 .square--light {
@@ -67,6 +88,21 @@
     font-size: 46px;
     line-height: 1;
     pointer-events: none;
+    transition: opacity 0.1s ease;
+}
+
+.knight--dragging {
+    opacity: 0;
+}
+
+.knight-drag {
+    position: fixed;
+    z-index: 10;
+    font-size: 46px;
+    line-height: 1;
+    pointer-events: none;
+    transform: translate(-50%, -55%);
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
 }
 
 .status {
