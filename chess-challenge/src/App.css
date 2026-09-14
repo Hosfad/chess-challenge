@@ -9,6 +9,13 @@
     flex-grow: 1;
 }
 
+@media (max-width: 720px) {
+    #center {
+        --square-size: min(80px, calc((100vw - 112px) / 8));
+        --board-width: calc(80px + 8 * var(--square-size));
+    }
+}
+
 .board-frame {
     display: grid;
     grid-template-columns: 28px repeat(8, var(--square-size)) 28px;
@@ -74,8 +81,8 @@
 }
 
 .move-dot {
-    width: 22px;
-    height: 22px;
+    width: min(22px, calc(var(--square-size) * 0.275));
+    height: min(22px, calc(var(--square-size) * 0.275));
     border-radius: 50%;
 }
 
@@ -88,7 +95,7 @@
 }
 
 .knight {
-    font-size: 56px;
+    font-size: calc(var(--square-size) * 0.7);
     line-height: 1;
     pointer-events: none;
     transition: opacity 0.1s ease;
@@ -101,7 +108,7 @@
 .knight-drag {
     position: fixed;
     z-index: 10;
-    font-size: 56px;
+    font-size: calc(var(--square-size) * 0.7);
     line-height: 1;
     pointer-events: none;
     transform: translate(-50%, -55%);
