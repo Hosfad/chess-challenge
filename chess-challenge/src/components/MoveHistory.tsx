@@ -1,19 +1,14 @@
 import { useEffect, useRef } from "react";
-import type { Square } from "../queries";
+import { BOARD_SIZE } from "../utils/constants";
+import type { ChessMove, Square } from "../utils/types";
 
-const BOARD_SIZE = 8;
-const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const SCROLL_STEP = 140;
 
-export type Move = {
-    from: Square;
-    to: Square;
-};
-
-const toNotation = ({ row, col }: Square) => `${FILES[col]}${BOARD_SIZE - row}`;
+const toString = ({ row, col }: Square) =>
+    `${String.fromCharCode(97 + col)}${BOARD_SIZE - row}`;
 
 type MoveHistoryProps = {
-    moves: Move[];
+    moves: ChessMove[];
 };
 
 export function MoveHistory({ moves }: MoveHistoryProps) {
@@ -58,14 +53,14 @@ export function MoveHistory({ moves }: MoveHistoryProps) {
                         <span className="move-history__index">
                             {index + 1}.
                         </span>
-                        {toNotation(move.from)}
+                        {toString(move.from)}
                         <span
                             className="move-history__arrow"
                             aria-hidden="true"
                         >
                             →
                         </span>
-                        {toNotation(move.to)}
+                        {toString(move.to)}
                     </span>
                 ))}
             </div>

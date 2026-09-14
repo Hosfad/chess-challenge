@@ -1,14 +1,4 @@
-
-
-export type Square = {
-    row: number;
-    col: number;
-}
-
-export type GameState = {
-    gameId: string;
-    knight: Square;
-}
+import type { GameState, Square } from "./types";
 
 const API_BASE = "/api";
 

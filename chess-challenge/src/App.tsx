@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Board } from "./components/Board";
-import { MoveHistory, type Move } from "./components/MoveHistory";
+import { MoveHistory } from "./components/MoveHistory";
 import { StatusBar } from "./components/StatusBar";
-import {
-    createGame,
-    endGame,
-    makeMove,
-    safeAwait,
-    type Square,
-} from "./queries";
+import { createGame, endGame, makeMove, safeAwait } from "./utils/queries";
+import type { ChessMove, Square } from "./utils/types";
 
 function App() {
     const [gameId, setGameId] = useState<string | null>(null);
     const [knight, setKnight] = useState<Square | null>(null);
-    const [moves, setMoves] = useState<Move[]>([]);
+    const [moves, setMoves] = useState<ChessMove[]>([]);
     const [isMoving, setIsMoving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +57,9 @@ function App() {
         }
 
         setKnight(nextKnight);
-        setMoves((previous) => [...previous, { from: knight, to: square }].slice(-10));
+        setMoves((previous) =>
+            [...previous, { from: knight, to: square }].slice(-10),
+        );
         return true;
     };
 

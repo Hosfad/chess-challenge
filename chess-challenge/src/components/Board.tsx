@@ -1,21 +1,6 @@
 import { useRef, useState } from "react";
-import type { Square } from "../queries";
-
-const BOARD_SIZE = 8;
-const SQUARE_SIZE = 80;
-
-const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
-
-const KNIGHT_JUMPS = [
-    { row: -2, col: -1 },
-    { row: -2, col: 1 },
-    { row: -1, col: -2 },
-    { row: -1, col: 2 },
-    { row: 1, col: -2 },
-    { row: 1, col: 2 },
-    { row: 2, col: -1 },
-    { row: 2, col: 1 },
-];
+import { BOARD_SIZE, KNIGHT_JUMPS } from "../utils/constants";
+import type { Square } from "../utils/types";
 
 const knightMovesFrom = ({ row, col }: Square): Square[] =>
     KNIGHT_JUMPS.map((jump) => ({
@@ -35,11 +20,9 @@ const squareFromPoint = (
 ): Square | null => {
     if (!el) return null;
     const rect = el.getBoundingClientRect();
-    const style = getComputedStyle(el);
-    const borderX = parseFloat(style.borderLeftWidth) || 0;
-    const borderY = parseFloat(style.borderTopWidth) || 0;
-    const col = Math.floor((clientX - rect.left - borderX) / SQUARE_SIZE);
-    const row = Math.floor((clientY - rect.top - borderY) / SQUARE_SIZE);
+    const squareSize = rect.width / BOARD_SIZE;
+    const col = Math.floor((clientX - rect.left) / squareSize);
+    const row = Math.floor((clientY - rect.top) / squareSize);
     if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
         return null;
     }
@@ -62,13 +45,14 @@ type BoardProps = {
 };
 
 function FileCoordinates({ row }: { row: number }) {
-    return FILES.map((file, index) => (
+    /* 97 is ASCII for a*/
+    return Array.from({ length: BOARD_SIZE }, (_, index) => (
         <span
-            key={`file-${row}-${file}`}
+            key={`file-${row}-${index}`}
             className="coord"
             style={{ gridColumn: index + 2, gridRow: row }}
         >
-            {file}
+            {String.fromCharCode(97 + index)}
         </span>
     ));
 }
@@ -139,16 +123,12 @@ function Square({
         >
             {hasKnight && (
                 <span
-                    className={`knight${
-                        isDragging ? " knight--dragging" : ""
-                    }`}
+                    className={`knight${isDragging ? " knight--dragging" : ""}`}
                 >
                     ♞
                 </span>
             )}
-            {isLegalMove && (
-                <span className="move-dot" aria-hidden="true" />
-            )}
+            {isLegalMove && <span className="move-dot" aria-hidden="true" />}
         </button>
     );
 }
@@ -219,11 +199,7 @@ export function Board({ knight, isMoving, onMove, onError }: BoardProps) {
 
         if (!knight) return;
 
-        const hovered = squareFromPoint(
-            boardRef.current,
-            e.clientX,
-            e.clientY,
-        );
+        const hovered = squareFromPoint(boardRef.current, e.clientX, e.clientY);
         if (hovered === null || isSameSquare(hovered, knight)) return;
 
         dragActiveRef.current = true;
@@ -243,15 +219,12 @@ export function Board({ knight, isMoving, onMove, onError }: BoardProps) {
 
         if (!knight) return;
 
-        const target = squareFromPoint(
-            boardRef.current,
-            e.clientX,
-            e.clientY,
-        );
+        const target = squareFromPoint(boardRef.current, e.clientX, e.clientY);
 
-        if (target && legalMoves.some((move) => isSameSquare(move, target))) {
-            performMove(target);
-        }
+        const legalMove =
+            target && legalMoves.some((move) => isSameSquare(move, target));
+        if (!legalMove) return onError("Illegal move");
+        performMove(target);
     };
 
     const handleKnightPointerCancel = () => {
