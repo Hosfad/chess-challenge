@@ -27,20 +27,6 @@ function App() {
         setMoves([]);
     };
 
-    useEffect(() => {
-        startGame();
-
-        const handleBeforeUnload = () => {
-            safeAwait(endGame(gameId!));
-        };
-        window.addEventListener("beforeunload", handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-            handleBeforeUnload();
-        };
-    }, []);
-
     const performMove = async (square: Square): Promise<boolean> => {
         if (!gameId || !knight || isMoving) return false;
 
@@ -62,6 +48,20 @@ function App() {
         );
         return true;
     };
+
+    useEffect(() => {
+        startGame();
+
+        const handleBeforeUnload = () => {
+            safeAwait(endGame(gameId!));
+        };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+            handleBeforeUnload();
+        };
+    }, []);
 
     return (
         <section id="center">

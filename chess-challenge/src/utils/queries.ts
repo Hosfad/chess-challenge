@@ -26,6 +26,7 @@ export const createGame = async (): Promise<GameState> => {
     console.log("Creating a game");
     const response = await fetch(`${API_BASE}/game`, { method: "POST" });
     if (!response.ok) throw await getErrMessage(response);
+    // TODO: validate response schema, casting the json to the GameState is not enough 
     return response.json();
 };
 
@@ -34,6 +35,7 @@ export const getGameState = async (gameId: string): Promise<GameState> => {
         `${API_BASE}/state?gameId=${encodeURIComponent(gameId)}`,
     );
     if (!response.ok) throw await getErrMessage(response);
+    // TODO: validate response schema, casting the json to the GameState is not enough 
     return response.json();
 };
 
@@ -45,6 +47,7 @@ export const makeMove = async (gameId: string, to: Square): Promise<Square> => {
     });
     if (!response.ok) throw await getErrMessage(response);
     const data = (await response.json()) as { knight: Square };
+    // TODO: validate response schema, casting the json to the GameState is not enough 
     return data.knight;
 };
 
