@@ -6,6 +6,10 @@ const games = new Map<string, Game>();
 
 const router = Router();
 
+router.get("/health", (_req, res) => {
+    res.json({ ok: true });
+});
+
 router.post("/game", (_req, res) => {
     // better to use UUID but in this case no need to add a dependency :P
     const game: Game = {

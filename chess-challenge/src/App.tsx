@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Board } from "./components/Board";
 import { MoveHistory } from "./components/MoveHistory";
@@ -13,6 +13,12 @@ function App() {
     const [isMoving, setIsMoving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const gameIdRef = useRef<string | null>(null);
+
+    useEffect(() => {
+        gameIdRef.current = gameId;
+    }, [gameId]);
+
     const startGame = async () => {
         setError(null);
         const [game, err] = await safeAwait(createGame());
@@ -23,6 +29,8 @@ function App() {
         }
 
         setGameId(game.gameId);
+        gameIdRef.current = game.gameId;
+
         setKnight(game.knight);
         setMoves([]);
     };
@@ -50,16 +58,17 @@ function App() {
     };
 
     useEffect(() => {
+        if (gameIdRef.current) return;
+
         startGame();
 
         const handleBeforeUnload = () => {
-            safeAwait(endGame(gameId!));
+            safeAwait(endGame(gameIdRef.current!));
         };
         window.addEventListener("beforeunload", handleBeforeUnload);
 
         return () => {
             window.removeEventListener("beforeunload", handleBeforeUnload);
-            handleBeforeUnload();
         };
     }, []);
 

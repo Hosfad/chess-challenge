@@ -83,7 +83,7 @@ type SquareProps = {
     onKnightPointerCancel: () => void;
 };
 
-function Square({
+function SquareComponent({
     square,
     hasKnight,
     isSelected,
@@ -107,11 +107,11 @@ function Square({
 
     const dragHandlers = hasKnight
         ? {
-              onPointerDown: onKnightPointerDown,
-              onPointerMove: onKnightPointerMove,
-              onPointerUp: onKnightPointerUp,
-              onPointerCancel: onKnightPointerCancel,
-          }
+            onPointerDown: onKnightPointerDown,
+            onPointerMove: onKnightPointerMove,
+            onPointerUp: onKnightPointerUp,
+            onPointerCancel: onKnightPointerCancel,
+        }
         : {};
 
     return (
@@ -248,7 +248,7 @@ export function Board({ knight, isMoving, onMove, onError }: BoardProps) {
                 ref={boardRef}
             >
                 {allSquares.map((square) => (
-                    <Square
+                    <SquareComponent
                         key={`${square.row}-${square.col}`}
                         square={square}
                         hasKnight={
